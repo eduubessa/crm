@@ -29,6 +29,6 @@ class StoreCustomerController extends Controller
             return back()->withInput($request->all())->withErrors([$validated]);
         }
 
-        return redirect()->to('/customers');
+        return redirect()->to('/customers')->with(['success' => 'Create customer success']);
     }
 }

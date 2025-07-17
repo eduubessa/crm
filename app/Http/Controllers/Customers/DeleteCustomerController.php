@@ -16,6 +16,6 @@ class DeleteCustomerController extends Controller
         //
         Customer::where('reference', $reference)->first()->delete();
 
-        return redirect()->to('customers')->with(['message' => 'Delete customer success']);
+        return redirect()->to('customers')->with(['success' => 'Delete customer success']);
     }
 }

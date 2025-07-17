@@ -25,7 +25,8 @@ class UpdateCustomerRequest extends FormRequest
             //
             'name' => 'string|min:3|max:50',
             'job' => 'string|min:3|max:50',
-            'email' => 'email|unique:users,email',
+            'tin' => 'required|integer|digits:9',
+            'email' => 'required|email|unique:users,email',
             'mobile_phone' => 'string|min:3|max:50',
             'phone_number' => 'nullable|string|min:3|max:50',
             'alternative_phone' => 'nullable|string|min:3|max:50',

@@ -1,12 +1,10 @@
 <?php
 
-use App\Helpers\Interfaces\ICustomer;
-use App\Models\Customer;
 use App\Models\User;
+use App\Helpers\Interfaces\ICustomer;
 use function Pest\Laravel\actingAs;
 
 test('passes validation with valid customer data', function () {
-
     $user = User::factory()->create();
 
     $data = [
@@ -30,7 +28,8 @@ test('passes validation with valid customer data', function () {
 
     actingAs($user)
         ->post("/customers/", $data)
-        ->assertStatus(302);
+        ->assertStatus(302)
+        ->assertSessionHas('success');
 
     $this->assertDatabaseHas('customers', [
         'name' => $data['name'],
@@ -88,6 +87,6 @@ test("guest cannot create a customer", function () {
         'type' => fake()->randomElement(ICustomer::TYPES)
     ];
 
-    post('customers', $data)
+    $this->post('/customers', $data)
         ->assertRedirect('/auth/sign-in');
 });

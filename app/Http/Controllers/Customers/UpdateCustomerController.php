@@ -7,7 +7,7 @@ use App\Http\Requests\Customers\UpdateCustomerRequest;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
-class UpdateCustomerController extends Controller
+final readonly class UpdateCustomerController
 {
     /**
      * Handle the incoming request.

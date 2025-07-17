@@ -8,7 +8,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class StoreCustomerController extends Controller
+final readonly class StoreCustomerController
 {
     /**
      * Handle the incoming request.

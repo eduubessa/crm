@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
-class DeleteCustomerController extends Controller
+final readonly class DeleteCustomerController
 {
     /**
      * Handle the incoming request.

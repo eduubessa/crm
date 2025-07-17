@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Customers;
+namespace App\Http\Controllers\Campaigns;
 
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
 use Illuminate\Http\Request;
 
-final readonly class IndexCustomerController
+final readonly class IndexCampaignController
 {
     /**
      * Handle the incoming request.
@@ -14,6 +13,9 @@ final readonly class IndexCustomerController
     public function __invoke(Request $request)
     {
         //
-        return response()->json(Customer::all());
+
+        return response()->json([
+            "Hello world"
+        ]);
     }
 }

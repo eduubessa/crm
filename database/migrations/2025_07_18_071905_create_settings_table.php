@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('reference')->unique()->index();
-            $table->string('original_filename');
-            $table->string('filename');
-            $table->string('extension');
-            $table->enum('type', array_values(FILE::TYPES))->default(FILE::TYPES['image']);
+            $table->string('key')->unique()->index();
+            $table->string('value')->nullable();
+            $table->string('default')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('settings');
     }
 };

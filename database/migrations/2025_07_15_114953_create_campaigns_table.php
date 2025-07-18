@@ -12,8 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('campaigns', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->integer('campaign_id')->index();
+            $table->string('name');
+            $table->string('reply_to');
+            $table->string('preview_text');
+            $table->string('subject');
+            $table->longText('html_content');
+            $table->string('type');
+            $table->string('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

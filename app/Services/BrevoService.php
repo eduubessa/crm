@@ -8,33 +8,27 @@ use GuzzleHttp\Client;
 
 final readonly class BrevoService {
 
-    public function __construct(
-        protected Client $http,
-        protected string $apiToken
-    )
-    { }
+    private Client $http;
 
-    public static function create(): BrevoService
+    public function __construct()
     {
-        $client = new Client([
-            'base_uri' => config('services.brevo.base_url'),
-            'headers' => [
+
+        $this->http = new Client([
+            'base_uri' => config('services.brevo.url'),
+            'headers'  => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
                 'api-key' => config('services.brevo.api_key'),
             ],
+            'timeout' => config('services.brevo.tiemout')
         ]);
-
-        return new self($client, config('services.brevo.api_token'));
     }
 
-    public function sendEmail(array $data): array
+    public function getAllCampaigns()
     {
-        $response = $this->http->post('smtp/email', [
-            'json' => $data
-        ]);
+        $response = $this->http->request('GET', config('services.brevo.base_url') . 'emailCampaigns');
 
-        return json_decode($response->getBody()->getContents(), true);
+        return json_decode($response->getBody()->getContents(), true)["campaigns"];
     }
 
 }

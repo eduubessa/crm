@@ -23,12 +23,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/{reference}', DeleteCustomerController::class)->name('customers.delete');
     });
 
-    Route::prefix('campaigns')->group(function () {
-        Route::get('/', IndexCampaignController::class)->name('campaigns.list');
-        Route::post('/', StoreCampaignController::class)->name('campaigns.store');
-        Route::put('/{reference', UpdateCampaignController::class)->name('campaigns.update');
-        Route::delete('/{reference}', DeleteCampaignController::class)->name('campaigns.delete');
-    });
+});
+
+Route::prefix('campaigns')->group(function () {
+    Route::get('/', IndexCampaignController::class)->name('campaigns.list');
+    Route::post('/', StoreCampaignController::class)->name('campaigns.store');
+    Route::put('/{reference', UpdateCampaignController::class)->name('campaigns.update');
+    Route::delete('/{reference}', DeleteCampaignController::class)->name('campaigns.delete');
 });
 
 require __DIR__.'/settings.php';

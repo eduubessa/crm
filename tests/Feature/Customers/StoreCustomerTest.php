@@ -1,11 +1,12 @@
 <?php
 
+use App\Models\Customer;
 use App\Models\User;
 use App\Helpers\Interfaces\ICustomer;
 use function Pest\Laravel\actingAs;
 
 test('passes validation with valid customer data', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['email_verified_at' => now()]);
 
     $data = [
         'name' => fake()->name,
@@ -38,7 +39,7 @@ test('passes validation with valid customer data', function () {
 });
 
 test("fails validation with valid missing fields", function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['email_verified_at' => now()]);
 
     $data = [
         'email' => fake()->unique()->safeEmail,
@@ -90,3 +91,15 @@ test("guest cannot create a customer", function () {
     $this->post('/customers', $data)
         ->assertRedirect('/auth/sign-in');
 });
+
+test('cannot delete a customer if not verified', function () {
+    $user = User::factory()->create(['email_verified_at' => null]);
+    $customer = Customer::factory()->create();
+
+    actingAs($user)
+        ->delete("/customers/{$customer->id}")
+        ->assertStatus(302)
+        ->assertRedirect('/account/verify/email');
+});
+
+// TODO: Cannot delete customer without permission

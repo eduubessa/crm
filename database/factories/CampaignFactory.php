@@ -18,6 +18,14 @@ class CampaignFactory extends Factory
     {
         return [
             //
+            'id' => $this->faker->uuid(),
+            'name' => $this->faker->name(),
+            'reply_to' => $this->faker->safeEmail,
+            'preview_text' => $this->faker->text(),
+            'subject' => $this->faker->realText(80),
+            'html_content' => $this->faker->randomHtml(10),
+            'type' => $this->faker->randomElement(['fake']),
+            'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }

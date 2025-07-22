@@ -29,6 +29,6 @@ final readonly class StoreCustomerController
             return back()->withInput($request->all())->withErrors([$validated]);
         }
 
-        return redirect()->to('/customers')->with(['success' => 'Create customer success']);
+        return redirect()->to('/customers')->with(['success' => 'Customer was successfully success!']);
     }
 }

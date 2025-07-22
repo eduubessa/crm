@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -15,11 +18,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         //
-        User::create([
-            'name' => 'Administrator',
-            'username' => 'admin',
-            'email' => 'admin@clinicamais.pt',
-            'password' => Hash::make('password'),
-        ]);
+        $user = new User();
+        $user->name = 'John Doe';
+        $user->username = 'john.doe';
+        $user->email = "john.doe@example.com";
+        $user->password = Hash::make('password');
+        $user->save();
+
+        $user->sendEmailVerificationNotification();
     }
 }

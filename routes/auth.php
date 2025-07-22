@@ -15,18 +15,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('auth/sign-in', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('auth/sign-in', [AuthenticatedSessionController::class, 'store']);
 
-Route::middleware('auth')->group(function () {
-    Route::prefix('account')->group(function () {
-        Route::prefix('password')->group(function () {
-            Route::get('forgot', [PasswordResetLinkController::class, 'create'])->name('password.request');
-            Route::post('forgot', [PasswordResetLinkController::class, 'store'])->name('password.email');
-            Route::get('reset/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
-            Route::post('reset', [NewPasswordController::class, 'store'])->name('password.store');
-        });
+Route::prefix('account')->group(function () {
+    Route::prefix('password')->group(function () {
+        Route::get('forgot', [PasswordResetLinkController::class, 'create'])->name('password.request');
+        Route::post('forgot', [PasswordResetLinkController::class, 'store'])->name('password.email');
+        Route::get('reset/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+        Route::post('reset', [NewPasswordController::class, 'store'])->name('password.store');
     });
-
-
 });
+
 
 Route::middleware('auth')->group(function () {
     Route::prefix('account')->group(function () {

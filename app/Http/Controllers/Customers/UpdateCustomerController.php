@@ -15,10 +15,10 @@ final readonly class UpdateCustomerController
     public function __invoke(UpdateCustomerRequest $request, string $reference)
     {
         //
-        $validated = $request->validated();
+        $request->validated();
 
         $customer = Customer::where('reference', $reference)->firstOrFail();
-        $customer->update($validated);
+        $customer->update($request->all());
 
         return redirect()->to('customers')->with(['success' => 'Update customer success']);
     }

@@ -5,50 +5,103 @@ use App\Models\User;
 use function Pest\Laravel\actingAs;
 
 it('can update a customer successfully', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['email_verified_at' => now()]);
     $customer = Customer::factory()->create();
 
-    actingAs($user)->put(route('customers.update', $customer), [
-                'name' => 'Novo Nome',
-                'email' => 'novo@email.com',
-                'phone' => '912345678',
-                'address' => 'Nova Morada 123',
-            ])
-        ->assertRedirect();
-
-    expect($customer->fresh())->toMatchArray([
+    $payload = [
         'name' => 'Novo Nome',
+        'tin' => '123456789',
         'email' => 'novo@email.com',
-        'phone' => '912345678',
         'address' => 'Nova Morada 123',
-    ]);
+        'city' => 'Nova Cidade',
+        'country' => 'Portugal',
+        'postcode' => '1234-567',
+        'birthday' => '1990-01-01'
+    ];
+
+    actingAs($user)->put("/customers/{$customer->reference}", $payload)
+        ->assertStatus(302)
+        ->assertRedirect('/customers');
+
+    $customer->refresh();
+
+    expect($customer->name)->toBe('Novo Nome');
+
 });
 
 it('fails to update customer with missing required fields', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['email_verified_at' => now()]);
     $customer = Customer::factory()->create();
 
-    actingAs($user)->put("customers/" . $customer->id)
-        ->assertSessionHasErrors(['name', 'email']); // ajusta conforme os teus campos obrigatórios
+    $payload = [
+        'tin' => '123456789',
+        'address' => 'Nova Morada 123',
+        'city' => 'Nova Cidade',
+        'country' => 'Portugal',
+        'postcode' => '1234-567',
+        'birthday' => '1990-01-01'
+    ];
+
+    actingAs($user)->put("customers/" . $customer->id, $payload)
+        ->assertStatus(302)
+        ->assertSessionHasErrors('name', 'email');
+});
+
+test('fails to update the customer with user not verified', function () {
+    $user = User::factory()->create(['email_verified_at' => null]);
+    $customer = Customer::factory()->create();
+
+    $payload = [
+        'name' => 'Novo Nome',
+        'tin' => '123456789',
+        'email' => 'novo@email.com',
+        'address' => 'Nova Morada 123',
+        'city' => 'Nova Cidade',
+        'country' => 'Portugal',
+        'postcode' => '1234-567',
+        'birthday' => '1990-01-01'
+    ];
+
+    actingAs($user)->put("customers/" . $customer->id, $payload)
+        ->assertStatus(302)
+        ->assertRedirect('/account/verify/email');
+
 });
 
 it('fails to update customer with invalid email', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['email_verified_at' => now()]);
     $customer = Customer::factory()->create();
 
-    actingAs($user)->put("customers/" . $customer->id, [
-            'name' => 'Nome válido',
-            'email' => 'email-invalido',
-        ])
+    $payload = [
+        'name' => 'Novo Nome',
+        'tin' => '123456789',
+        'email' => 'novo.email.com',
+        'address' => 'Nova Morada 123',
+        'city' => 'Nova Cidade',
+        'country' => 'Portugal',
+        'postcode' => '1234-567',
+        'birthday' => '1990-01-01'
+    ];
+
+    actingAs($user)->put("customers/" . $customer->id, $payload)
         ->assertSessionHasErrors(['email']);
 });
 
 it('does not allow guest to update a customer', function () {
     $customer = Customer::factory()->create();
 
-    $this->put('/customers/'. $customer->id, [
-            'name' => 'Teste',
-            'email' => 'teste@email.com',
-        ])
-        ->assertRedirect(route('login')); // ou assertUnauthorized() se for API
+    $payload = [
+        'name' => 'Novo Nome',
+        'tin' => '123456789',
+        'email' => 'novo@email.com',
+        'address' => 'Nova Morada 123',
+        'city' => 'Nova Cidade',
+        'country' => 'Portugal',
+        'postcode' => '1234-567',
+        'birthday' => '1990-01-01'
+    ];
+
+    $this->put('/customers/'. $customer->id, $payload)
+        ->assertStatus(302)
+        ->assertRedirect('/auth/sign-in');
 });

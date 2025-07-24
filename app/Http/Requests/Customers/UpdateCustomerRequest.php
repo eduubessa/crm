@@ -11,7 +11,7 @@ class UpdateCustomerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return auth()->check() && auth()->user()->hasVerifiedEmail();
     }
 
     /**
@@ -23,7 +23,7 @@ class UpdateCustomerRequest extends FormRequest
     {
         return [
             //
-            'name' => 'string|min:3|max:50',
+            'name' => 'required|string|min:3|max:50',
             'job' => 'string|min:3|max:50',
             'tin' => 'required|integer|digits:9',
             'email' => 'required|email|unique:users,email',
@@ -32,13 +32,10 @@ class UpdateCustomerRequest extends FormRequest
             'alternative_phone' => 'nullable|string|min:3|max:50',
             'address' => 'required|string|min:3|max:150',
             'city' => 'required|string|min:3|max:150',
-            'state' => 'required|string|min:3|max:150',
+            'state' => 'string|min:3|max:150',
             'postcode' => 'required|string|min:3|max:150',
             'country' => 'required|string|min:3|max:150',
             'birthday' => 'required|date',
-            'gender' => 'string|max:1|in:M,F',
-            'notes' => 'nullable|string|min:3|max:300',
-            'type' => 'required|string|min:3|max:30',
         ];
     }
 }

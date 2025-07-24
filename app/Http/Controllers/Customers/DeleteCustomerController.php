@@ -14,8 +14,8 @@ final readonly class DeleteCustomerController
     public function __invoke(Request $request, string $reference)
     {
         //
-        Customer::where('reference', $reference)->first()->delete();
+        Customer::where('reference', $reference)->firstOrFail()->delete();
 
-        return redirect()->to('customers')->with(['success' => 'Delete customer success']);
+        return redirect()->to('customers')->with('success', 'Customer deleted successfully!');
     }
 }

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Campaigns;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCampaignRequest extends FormRequest
+class UpdateCampaignRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->check() && request()->user()->hasVerifiedEmail();
+        return auth()->check() && auth()->user()->hasVerifiedEmail();
     }
 
     /**
@@ -23,9 +23,9 @@ class StoreCampaignRequest extends FormRequest
     {
         return [
             //
-            'name' => 'required|string|min:3|max:30',
+            'name' => 'string|min:3|max:30',
             'reply_to' => 'nullable|email|min:3|max:30',
-            'subject' => 'required|string|min:3|max:50',
+            'subject' => 'nullable|string|min:3|max:50',
             'preview_text' => 'nullable|string|max:150',
             'html_content' => 'nullable|string|max:65535',
             'type' => 'nullable|string|in:html,text,plain',

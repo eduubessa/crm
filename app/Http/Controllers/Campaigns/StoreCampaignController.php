@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Campaigns;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCampaignRequest;
+use App\Http\Requests\Campaigns\StoreCampaignRequest;
 use App\Models\Campaign;
-use Illuminate\Http\Request;
 
 final readonly class StoreCampaignController
 {

@@ -9,6 +9,10 @@ use App\Http\Controllers\Customers\IndexCustomerController;
 use App\Http\Controllers\Customers\StoreCustomerController;
 use App\Http\Controllers\Customers\UpdateCustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Tags\DeleteTagController;
+use App\Http\Controllers\Tags\IndexTagController;
+use App\Http\Controllers\Tags\StoreTagController;
+use App\Http\Controllers\Tags\UpdateTagController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -28,6 +32,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/', StoreCampaignController::class)->name('campaigns.store');
         Route::put('/{id}', UpdateCampaignController::class)->name('campaigns.update');
         Route::delete('/{id}', DeleteCampaignController::class)->name('campaigns.delete');
+    });
+
+    Route::prefix('tags')->group(function () {
+        Route::get('/', IndexTagController::class)->name('tags.list');
+        Route::post('/', StoreTagController::class)->name('tags.store');
+        Route::delete('/{slug}', DeleteTagController::class)->name('tags.delete');
     });
 
 });

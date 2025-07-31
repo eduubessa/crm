@@ -41,3 +41,36 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Customer {
+    id: string;
+    tin: number;
+    name: string;
+    email: string;
+    avatar: string;
+    phone_number: string;
+    phone_verified_at: Date | null;
+    email_verified_at: Date | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Customers {
+    Customers: Customer[];
+}
+
+export interface Pagination<T> {
+    data: T[];
+    total: number;
+    per_page: number;
+    current_page: number;
+    last_page: number;
+    from: number;
+    to: number;
+    prev_page_url: string | null;
+    next_page_url: string | null;
+}
+
+export interface PageProps {
+    customers: Pagination<Customers>;
+}

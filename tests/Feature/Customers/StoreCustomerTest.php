@@ -12,7 +12,7 @@ test('passes validation with valid customer data', function () {
         'name' => fake()->name,
         'job' => fake()->jobTitle,
         'gender' => fake()->randomElement(array_values(ICustomer::GENDERS)),
-        'tin' => fake()->unique()->randomNumber(9),
+        'tin' => fake()->unique()->numberBetween(100000000, 999999999),
         'mobile_phone' => fake()->unique()->phoneNumber,
         'phone_number' => fake()->unique()->optional()->phoneNumber,
         'alternate_phone' => fake()->unique()->optional()->phoneNumber,

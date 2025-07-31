@@ -6,9 +6,11 @@ use function Pest\Laravel\actingAs;
 test('creates a tag successfully', function () {
     $user = User::factory()->create(['email_verified_at' => now()]);
 
+    $name = fake()->unique()->word;
+
     $payload = [
-        'name' => fake()->unique()->word,
-        'slug' => fake()->unique()->slug
+        'name' => $name,
+        'slug' => Str::slug($name),
     ];
 
     actingAs($user)
@@ -30,7 +32,7 @@ test('fails when required fields are missing', function () {
     actingAs($user)
         ->post('/tags', $payload)
         ->assertStatus(302)
-        ->assertRedirect('/tags')
+        ->assertRedirect('/')
         ->assertSessionHasErrors(['name' => 'The name field is required.']);
 
     $this->assertDatabaseMissing('tags', ['name']);

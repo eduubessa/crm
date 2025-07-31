@@ -17,25 +17,29 @@ class CustomerFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = $this->faker;
+
+        // reset único se estiveres a gerar muitos seguidos (opcional)
+        $faker->unique(false);
+
         return [
-            //
-            'reference' => $this->faker->uuid(),
-            'name' => fake()->name,
-            'job' => fake()->jobTitle,
-            'gender' => fake()->randomElement(array_values(ICustomer::GENDERS)),
-            'tin' => fake()->randomNumber(9),
-            'mobile_phone' => fake()->unique()->phoneNumber,
-            'phone_number' => fake()->unique()->optional()->phoneNumber,
-            'alternative_phone' => fake()->unique()->optional()->phoneNumber,
-            'email' => fake()->unique()->safeEmail(),
-            'address' => fake()->streetAddress(),
-            'city' => fake()->city,
-            'state' => fake()->city,
-            'postcode' => fake()->postcode,
-            'country' => fake()->country,
-            'birthday' => fake()->date,
-            'notes' => fake()->optional()->text,
-            'type' => fake()->randomElement(array_values(ICustomer::TYPES))
+            'reference' => $faker->uuid(),
+            'name' => $faker->name(),
+            'job' => $faker->jobTitle(),
+            'gender' => $faker->randomElement(array_values(ICustomer::GENDERS)),
+            'tin' => $faker->numerify('#########'), // exatamente 9 dígitos
+            'mobile_phone' => $faker->unique()->phoneNumber(),
+            'phone_number' => $faker->optional()->phoneNumber(),
+            'alternative_phone' => $faker->optional()->phoneNumber(),
+            'email' => $faker->unique()->safeEmail(),
+            'address' => $faker->streetAddress(),
+            'city' => $faker->city(),
+            'state' => $faker->city(),
+            'postcode' => $faker->postcode(),
+            'country' => $faker->country(),
+            'birthday' => $faker->date(),
+            'notes' => $faker->optional()->text(),
+            'type' => $faker->randomElement(array_values(ICustomer::TYPES)),
         ];
     }
 }

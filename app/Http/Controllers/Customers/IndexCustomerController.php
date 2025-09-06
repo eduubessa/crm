@@ -15,12 +15,15 @@ final readonly class IndexCustomerController
     public function __invoke(Request $request)
     {
         //
-        $customers = Customer::orderBy('created_at', 'desc')
+        $recent_customers = Customer::orderBy('created_at', 'desc')
             ->limit(6)
             ->get();
 
+        $all_customers = Customer::all();
+
         return Inertia::render('welcome', [
-            'customers' => $customers
+            'recent_customers' => $recent_customers,
+            'all_customers' => $all_customers,
         ]);
     }
 }

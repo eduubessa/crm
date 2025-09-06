@@ -6,7 +6,7 @@ import AppNavbar from '@/components/app-navbar';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
-    const { customers } = usePage<Customer>().props;
+    const { recent_customers, all_customers } = usePage<Customer>().props;
 
     return (
         <>
@@ -68,7 +68,7 @@ export default function Welcome() {
                                     <h2 className="text-md mb-2 font-semibold">Clientes recentes</h2>
                                 </header>
                                 <div className="flex items-stretch gap-4 overflow-x-auto">
-                                    {customers && customers.map((customer, index) => (
+                                    { recent_customers && recent_customers.map((customer, index) => (
                                             <article
                                                 key={'xcust' + index}
                                                 className="h-45 flex-1 items-center space-x-4 rounded-2xl bg-blue-300 px-3 py-4"
@@ -87,20 +87,53 @@ export default function Welcome() {
                                 <header>
                                     <h2 className="text-md mb-2 font-semibold">Todos os clientes</h2>
                                 </header>
-                                <div className="flex h-85 flex-wrap gap-[1%] overflow-x-hidden text-white">
-                                    {customers &&
-                                        customers.map((customer, index) => (
-                                            <article
-                                                key={'xcust' + index}
-                                                className="h-40 w-66 items-center space-x-4 rounded-2xl bg-blue-800 px-3 py-4"
-                                            >
-                                                <h1 className="w-full text-lg font-bold">{customer.name}</h1>
-                                                <p>{customer.email}</p>
-                                                <p>{customer.mobile_phone}</p>
-                                                <p>{customer.city}</p>
-                                                <p>{customer.country}</p>
-                                            </article>
-                                        ))}
+                                <div className="flex h-auto flex-wrap gap-[1%] overflow-x-hidden text-white">
+                                    <div className="flex flex-col">
+                                        <div className="-m-1.5 overflow-x-auto">
+                                            <div className="inline-block min-w-full p-1.5 align-middle">
+                                                <div className="overflow-hidden rounded-lg border border-gray-200">
+                                                    <table className="w-full min-w-full divide-y divide-gray-200">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">ID</th>
+                                                                <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Name</th>
+                                                                <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Age</th>
+                                                                <th scope="col" className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Address</th>
+                                                                <th scope="col" className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody className="divide-y divide-gray-200">
+                                                            { all_customers && all_customers.map((customer, index) => (
+                                                                <tr>
+                                                                    <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800">
+                                                                        {customer.id}
+                                                                    </td>
+                                                                    <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800">
+                                                                        {customer.name}
+                                                                        <p>{customer.email}</p>
+                                                                    </td>
+                                                                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800">45</td>
+                                                                    <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-800">
+                                                                        {customer.address}
+                                                                        <p>{customer.city}</p>
+                                                                    </td>
+                                                                    <td className="px-6 py-4 text-end text-sm font-medium whitespace-nowrap">
+                                                                        <button
+                                                                            type="button"
+                                                                            className="inline-flex items-center gap-x-2 rounded-lg border border-transparent text-sm font-semibold text-blue-600 hover:text-blue-800 focus:text-blue-800 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+                                                                        >
+                                                                            Delete
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </section>
